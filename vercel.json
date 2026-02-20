@@ -4,7 +4,9 @@
   "rewrites": [
     { "source": "/a", "destination": "/a/index.html" },
     { "source": "/b", "destination": "/b/index.html" },
-    { "source": "/c", "destination": "/c/index.html" }
+    { "source": "/c", "destination": "/c/index.html" },
+    { "source": "/lab", "destination": "/lab/index.html" },
+    { "source": "/lab/", "destination": "/lab/index.html" }
   ],
   "headers": [
     {

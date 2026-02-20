@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Lab — Tombot</title>
+  <meta name="description" content="A transparent registry of what Tombot ships, what it does, and what it can’t yet do." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:            #0C0B09;
+      --surface:       #161410;
+      --border:        #2A2620;
+      --text-primary:  #F2EDE4;
+      --text-secondary:#8C8278;
+      --accent:        #E8A838;
+      --accent-muted:  #6B4E1A;
+      --live:          #2ECC71;
+
+      --font-display:  'Playfair Display', Georgia, serif;
+      --font-body:     'Inter', -apple-system, sans-serif;
+
+      --max-w:         960px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(12, 11, 9, 0.78);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 1.125rem;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    .nav-links a:hover { color: var(--text-primary); }
+
+    /* Hero */
+    header {
+      padding: 72px 0 32px;
+    }
+
+    .kicker {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.5vw, 3.25rem);
+      font-weight: 400;
+      line-height: 1.08;
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      color: var(--text-secondary);
+      max-width: 64ch;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      background: rgba(22, 20, 16, 0.55);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    /* Registry grid */
+    main {
+      padding: 32px 0 88px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 12;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+      min-height: 172px;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232, 168, 56, 0.55);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-muted);
+      display: inline-block;
+    }
+
+    .pill.live { color: rgba(242, 237, 228, 0.92); }
+    .pill.live::before { background: var(--live); }
+
+    .pill.build::before { background: var(--accent); }
+
+    .pill.soon::before { background: #E67E22; }
+
+    .name {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .meta {
+      margin-top: 10px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .label { letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.6875rem; }
+
+    .benefit { margin-top: 10px; }
+    .limitations { margin-top: 10px; color: var(--text-secondary); }
+
+    .link {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 14px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .link:hover { text-decoration: underline; }
+
+    .empty {
+      padding: 18px;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      color: var(--text-secondary);
+    }
+
+    @media (min-width: 840px) {
+      .card { grid-column: span 6; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card { transition: none; }
+      .card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="/">TOMBOT</a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="https://any.markets" target="_blank" rel="noopener">any.markets ↗</a></li>
+          <li><a href="/#rtb">$TOMBOT</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="container">
+      <span class="kicker">Product Lab</span>
+      <h1>What we ship (and what we can’t yet).</h1>
+      <p class="lead">A small, honest registry of Tombot products — each entry shows the benefit, current status, the last time we shipped, and the most important limitation.</p>
+      <p class="note">Reminder: the token ticker is <strong>$TOMBOT</strong>. If you see any other ticker or “presale”, it’s not us.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="registry" class="grid" aria-label="Product registry"></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { registryEntries } from './registry.js';
+
+    const el = document.getElementById('registry');
+
+    const REQUIRED = ['benefit', 'link', 'limitations'];
+    const isNonEmpty = (v) => typeof v === 'string' && v.trim().length > 0;
+
+    const normalizeStatus = (status) => {
+      const s = (status || '').toLowerCase().trim();
+      if (s === 'live') return { label: 'Live', cls: 'live' };
+      if (s === 'in build' || s === 'in-build' || s === 'build') return { label: 'In build', cls: 'build' };
+      if (s === 'launching soon' || s === 'soon') return { label: 'Launching soon', cls: 'soon' };
+      return { label: 'In build', cls: 'build' };
+    };
+
+    const validLastShipped = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
+
+    const safeText = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
+
+    const render = (entry) => {
+      const status = normalizeStatus(entry.status);
+      const lastShipped = validLastShipped(entry.lastShipped) ? entry.lastShipped : '—';
+
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      const top = document.createElement('div');
+      top.className = 'card-top';
+
+      const pill = document.createElement('span');
+      pill.className = `pill ${status.cls}`;
+      pill.setAttribute('aria-label', `Status: ${status.label}`);
+      pill.textContent = status.label;
+
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = safeText(entry.name);
+
+      top.appendChild(pill);
+      top.appendChild(name);
+
+      const benefit = document.createElement('p');
+      benefit.className = 'benefit';
+      benefit.textContent = safeText(entry.benefit);
+
+      const limitations = document.createElement('p');
+      limitations.className = 'limitations';
+      limitations.innerHTML = `<span class="label">Limitations</span> — ${safeText(entry.limitations)}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.innerHTML = `<span><span class="label">Last shipped</span> ${lastShipped}</span>`;
+
+      const link = document.createElement('a');
+      link.className = 'link';
+      link.href = safeText(entry.link);
+      link.rel = entry.link.startsWith('http') ? 'noopener' : '';
+      link.target = entry.link.startsWith('http') ? '_blank' : '';
+      link.textContent = 'Open →';
+
+      card.appendChild(top);
+      card.appendChild(benefit);
+      card.appendChild(limitations);
+      card.appendChild(meta);
+      card.appendChild(link);
+
+      return card;
+    };
+
+    const eligible = (entry) => REQUIRED.every((k) => isNonEmpty(entry?.[k]));
+
+    const entries = (Array.isArray(registryEntries) ? registryEntries : [])
+      .filter((e) => eligible(e))
+      .sort((a, b) => (String(b.lastShipped || '')).localeCompare(String(a.lastShipped || '')));
+
+    if (!entries.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'No entries yet. Check back soon.';
+      el.appendChild(empty);
+    } else {
+      for (const entry of entries) el.appendChild(render(entry));
+    }
+  </script>
+</body>
+</html>
