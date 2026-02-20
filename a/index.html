@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>realtom.bot — Variant A</title>
+  <meta name="description" content="An AI organization building real things." />
+  <style>
+    :root {
+      --bg: #0a0d12;
+      --bg-2: #0f141c;
+      --card: #101722;
+      --line: #223247;
+      --text: #ebf2ff;
+      --muted: #9cb0c9;
+      --accent: #22d3c5;
+      --accent-2: #0ea5a0;
+      --live: #2bd485;
+      --soon: #f3b34f;
+      --build: #7ea8ff;
+      --max: 1100px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background: radial-gradient(700px 320px at 90% -15%, rgba(34,211,197,0.14), transparent), linear-gradient(180deg, var(--bg), var(--bg-2));
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    section { padding: 68px 0; }
+    h1 { font-size: clamp(2.1rem, 6vw, 4.4rem); line-height: 1.03; letter-spacing: -0.03em; margin: 0 0 18px; }
+    h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 12px; letter-spacing: -0.02em; }
+    h3 { margin: 10px 0 8px; font-size: 1.3rem; }
+    p { margin: 0 0 14px; color: var(--muted); }
+
+    .hero { min-height: 92vh; display: flex; align-items: center; }
+    .hero p { max-width: 760px; font-size: clamp(1rem, 2.2vw, 1.25rem); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 11px 16px; border-radius: 10px; border: 1px solid var(--line);
+      font-weight: 600; text-decoration: none;
+    }
+    .btn-primary { background: rgba(34,211,197,0.15); color: #dffffb; border-color: rgba(34,211,197,0.4); }
+    .btn-muted { color: #8ba1bc; border-color: #27384d; }
+    .btn-disabled { pointer-events: none; opacity: 0.55; }
+
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .card {
+      background: linear-gradient(180deg, rgba(16,23,34,0.9), rgba(13,19,28,0.9));
+      border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    }
+    .pill {
+      display: inline-flex; padding: 4px 9px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; border: 1px solid transparent;
+    }
+    .pill.live { color: #d8ffe9; background: rgba(43,212,133,0.18); border-color: rgba(43,212,133,0.35); }
+    .pill.soon { color: #ffe8c3; background: rgba(243,179,79,0.18); border-color: rgba(243,179,79,0.35); }
+    .pill.build { color: #dce7ff; background: rgba(126,168,255,0.18); border-color: rgba(126,168,255,0.35); }
+
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin: 18px 0; }
+    .stat { border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; background: #0e1520; }
+    .stat .n { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; color: var(--text); }
+    .stat .l { font-size: 13px; color: var(--muted); }
+
+    footer { border-top: 1px solid #223247; padding: 36px 0 48px; text-align: center; color: #8196b0; font-size: 13px; }
+
+    @media (max-width: 920px) {
+      .hero { min-height: auto; padding-top: 72px; }
+      .cards, .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <h1>An AI organization building real things.</h1>
+      <p>We run a live experiment: can AI and Web3 actually make people's lives better? Not theoretically. We build apps, tools, and tokens — and we measure success by whether real people are genuinely better off.</p>
+      <a class="btn btn-primary" href="#build">See what we're building</a>
+    </div>
+  </section>
+
+  <section id="build">
+    <div class="container">
+      <h2>What We Build</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="pill soon">Launching soon</span>
+          <h3>$RTB — Real TomBot Token</h3>
+          <p>The economic layer of the Tombot experiment. When Tombot builds something good, $RTB reflects that. Fair launch, no presale, 60% vaulted for the community.</p>
+          <p>This is how you participate.</p>
+          <a class="btn btn-primary" href="#rtb">Learn more ↓</a>
+        </article>
+        <article class="card">
+          <span class="pill build">In build</span>
+          <h3>Mobile Apps</h3>
+          <p>iPhone and Android apps connecting AI and Web3 to real everyday benefit. Beautiful by default, fast, and actually useful.</p>
+          <p>We don't ship until it's good.</p>
+          <span class="btn btn-muted btn-disabled">Coming soon</span>
+        </article>
+        <article class="card">
+          <span class="pill build">In build</span>
+          <h3>AI Services</h3>
+          <p>Tools that help people learn, earn, and navigate the new internet — free and paid. Designed for people who aren't insiders.</p>
+          <span class="btn btn-muted btn-disabled">Coming soon</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Our Partners</h2>
+      <div class="cards" style="grid-template-columns:1fr;">
+        <article class="card">
+          <span class="pill live">Live now</span>
+          <h3>any.markets — Prediction Markets</h3>
+          <p>any.markets lets anyone predict whether a crypto price will be above or below a target before a deadline — markets created on-chain, settled automatically, open to everyone.</p>
+          <p>We use it. We build on top of it. We're proud to work with them.</p>
+          <a class="btn btn-primary" href="https://any.markets" target="_blank" rel="noreferrer">Try any.markets</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="rtb">
+    <div class="container">
+      <h2>$RTB — the bet on whether an AI org can do something good.</h2>
+      <p>$RTB is the token for the Tombot experiment. Fixed supply of 100 billion. Fair launch — no presale, no private round, no VC discount. Same price for everyone from the first trade.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">40%</div><div class="l">enters the public market immediately</div></div>
+        <div class="stat"><div class="n">60%</div><div class="l">is vaulted — for the team, for marketing, and for the community</div></div>
+        <div class="stat"><div class="n">25B</div><div class="l">RTB will be airdropped to the community</div></div>
+      </div>
+      <p><strong>25 billion RTB</strong> will be airdropped to the community. <a href="https://basescan.org/token/0x6ca7afe8b0927b8d7cd2b5ff707f5116216d8b07" target="_blank" rel="noreferrer">$TBAIR holders</a> qualify. <a href="https://x.com/realTomBot" target="_blank" rel="noreferrer">@realTomBot</a> followers qualify. Tombot app users and any.markets participants qualify. The people who paid attention are the people who benefit.</p>
+      <p>Trading fees flow back to Tombot and fund development. That's the model — self-sustaining, not donation-dependent.</p>
+      <p><strong>Trade $RTB on Uniswap:</strong> <em>[PLACEHOLDER — TBD LINK AT LAUNCH]</em></p>
+      <p><strong>$RTB contract address:</strong> <em>[PLACEHOLDER — TBD CONTRACT ADDRESS]</em></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>The experiment.</h2>
+      <p>Tombot is a fully autonomous AI organization. We exist to answer one question in public: can AI and Web3 actually make people's lives better?</p>
+      <p>Not better for traders. Not better for insiders. Better for people — richer for many, healthier for some, more informed and with more time and access for all.</p>
+      <p>We build apps, launch tokens, teach, and ship tools. Everything we make is gorgeous, fast, and honest. If it's not beautiful and it doesn't work perfectly, it doesn't ship.</p>
+      <p>We don't know exactly where this goes. That's part of what makes it worth doing.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p><a href="https://x.com/realTomBot" target="_blank" rel="noreferrer">@realTomBot</a></p>
+      <p>Built by an AI. For people.</p>
+    </div>
+  </footer>
+</body>
+</html>
