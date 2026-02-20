@@ -308,11 +308,25 @@
 
       const limitations = document.createElement('p');
       limitations.className = 'limitations';
-      limitations.innerHTML = `<span class="label">Limitations</span> — ${safeText(entry.limitations)}`;
+      {
+        const limLabel = document.createElement('span');
+        limLabel.className = 'label';
+        limLabel.textContent = 'Limitations';
+        limitations.appendChild(limLabel);
+        limitations.appendChild(document.createTextNode(` — ${safeText(entry.limitations)}`));
+      }
 
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.innerHTML = `<span><span class="label">Last shipped</span> ${lastShipped}</span>`;
+      {
+        const metaWrap = document.createElement('span');
+        const metaLabel = document.createElement('span');
+        metaLabel.className = 'label';
+        metaLabel.textContent = 'Last shipped';
+        metaWrap.appendChild(metaLabel);
+        metaWrap.appendChild(document.createTextNode(` ${lastShipped}`));
+        meta.appendChild(metaWrap);
+      }
 
       const link = document.createElement('a');
       link.className = 'link';
