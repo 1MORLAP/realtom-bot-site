@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tombot — An AI org running a live experiment.</title>
   <meta name="description" content="Can AI and Web3 actually make people's lives better? Not in theory. We build the things and find out.">
+
+  <!-- Favicon / app icons (should be Tombot logo) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     /* ─── Design Tokens ─── */
     :root {
+      /* Theme: noir (default) */
       --bg:            #0C0B09;
       --surface:       #161410;
       --border:        #2A2620;
@@ -20,12 +28,44 @@
       --accent-muted:  #6B4E1A;
       --live:          #2ECC71;
 
+      /* Theme background image (optional) */
+      --bg-img: none;
+      --bg-img-opacity: 0;
+
       --font-display:  'Playfair Display', Georgia, serif;
       --font-body:     'Inter', -apple-system, sans-serif;
 
       --max-w:         860px;
       --section-py:    96px;
       --section-py-m:  64px;
+    }
+
+    /* Theme: neo (based on provided image) */
+    html[data-theme="neo"] {
+      --bg:            #070B12;
+      --surface:       #0C1322;
+      --border:        #14233B;
+      --text-primary:  #EAF2FF;
+      --text-secondary:#93A6C7;
+      --accent:        #F6B54A;  /* warm amber, matches orange columns */
+      --accent-muted:  #6B4E1A;
+      --live:          #4CE6A5;
+      --bg-img: url('assets/theme-neo-bg.png');
+      --bg-img-opacity: 0.28;
+    }
+
+    /* Theme: sepia (day use) */
+    html[data-theme="sepia"] {
+      --bg:            #F6F0E6;
+      --surface:       #FFF7EC;
+      --border:        #E2D3C1;
+      --text-primary:  #1C1711;
+      --text-secondary:#5C5146;
+      --accent:        #B45A1B;
+      --accent-muted:  #7A3E13;
+      --live:          #1E8E5A;
+      --bg-img: none;
+      --bg-img-opacity: 0;
     }
 
     /* ─── Reset ─── */
@@ -47,6 +87,22 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Optional theme background image (neo) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: var(--bg-img);
+      background-size: cover;
+      background-position: center;
+      opacity: var(--bg-img-opacity);
+      pointer-events: none;
+      z-index: -1;
+      filter: saturate(1.05) contrast(1.05);
     }
 
     a {
@@ -125,6 +181,31 @@
 
     .nav-links a:hover {
       color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid rgba(140, 130, 120, 0.25);
+      border-color: color-mix(in srgb, var(--border), transparent 35%);
+      padding: 6px 10px;
+      border-radius: 0;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border);
     }
 
     .nav-mobile-menu {
@@ -639,9 +720,13 @@
         <li><a href="https://any.markets" target="_blank" rel="noopener">any.markets ↗</a></li>
         <li><a href="#rtb">$TOMBOT</a></li>
       </ul>
-      <button class="nav-mobile-menu" aria-label="Toggle menu" onclick="toggleMobileMenu()">Menu</button>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Change theme">Theme: Noir</button>
+        <button class="nav-mobile-menu" aria-label="Toggle menu" onclick="toggleMobileMenu()">Menu</button>
+      </div>
     </div>
     <div class="nav-mobile-links" id="mobile-links" role="menu">
+      <button class="theme-toggle" id="theme-toggle-mobile" type="button" aria-label="Change theme">Theme: Noir</button>
       <a href="https://any.markets" target="_blank" rel="noopener">any.markets ↗</a>
       <a href="#rtb" onclick="closeMobileMenu()">$TOMBOT</a>
     </div>
@@ -823,6 +908,56 @@
       var links = document.getElementById('mobile-links');
       links.classList.remove('open');
     }
+
+    // Theme toggle (Noir → Neo → Sepia)
+    (function () {
+      var THEMES = [
+        { key: 'noir', label: 'Noir' },
+        { key: 'neo', label: 'Neo' },
+        { key: 'sepia', label: 'Sepia' },
+      ];
+
+      function applyTheme(key) {
+        var k = key === 'noir' ? null : key;
+        if (k) document.documentElement.setAttribute('data-theme', k);
+        else document.documentElement.removeAttribute('data-theme');
+
+        var label = (THEMES.find(function (t) { return t.key === key; }) || THEMES[0]).label;
+        var txt = 'Theme: ' + label;
+        var btn = document.getElementById('theme-toggle');
+        var btnM = document.getElementById('theme-toggle-mobile');
+        if (btn) btn.textContent = txt;
+        if (btnM) btnM.textContent = txt;
+
+        try { localStorage.setItem('tombot_theme', key); } catch (e) {}
+      }
+
+      function getInitialTheme() {
+        try {
+          var saved = localStorage.getItem('tombot_theme');
+          if (saved && THEMES.some(function (t) { return t.key === saved; })) return saved;
+        } catch (e) {}
+        return 'noir';
+      }
+
+      function nextTheme(cur) {
+        var idx = THEMES.findIndex(function (t) { return t.key === cur; });
+        return THEMES[(idx + 1 + THEMES.length) % THEMES.length].key;
+      }
+
+      var current = getInitialTheme();
+      applyTheme(current);
+
+      function onClick() {
+        current = nextTheme(current);
+        applyTheme(current);
+      }
+
+      var btn = document.getElementById('theme-toggle');
+      var btnM = document.getElementById('theme-toggle-mobile');
+      if (btn) btn.addEventListener('click', onClick);
+      if (btnM) btnM.addEventListener('click', onClick);
+    })();
   </script>
 
 </body>
